@@ -1,9 +1,8 @@
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { AuthProvider, ProtectedRoute, AdminLoginPage } from "@/auth";
 import { AdminThemeProvider } from "@/admin/ThemeProvider";
 import AdminLayout from "@/admin/AdminLayout";
 import {
@@ -33,8 +32,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ErrorBoundary>
       <AdminThemeProvider>
-        <AuthProvider>
-          <TooltipProvider>
+        <TooltipProvider>
             <Sonner />
             <BrowserRouter>
               <Routes>
@@ -46,8 +44,8 @@ const App = () => (
                 <Route path="/booking" element={<Booking />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/quiz" element={<Quiz />} />
-                <Route path="/admin/login" element={<AdminLoginPage />} />
-                <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+                <Route path="/admin/login" element={<Navigate to="/admin" replace />} />
+                <Route path="/admin" element={<AdminLayout />}>
                   <Route index element={<AdminDashboard />} />
                   <Route path="settings" element={<AdminSiteSettings />} />
                   <Route path="media" element={<AdminMedia />} />
@@ -59,8 +57,7 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
-          </TooltipProvider>
-        </AuthProvider>
+        </TooltipProvider>
       </AdminThemeProvider>
     </ErrorBoundary>
   </QueryClientProvider>
