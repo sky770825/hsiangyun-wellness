@@ -13,14 +13,13 @@
 /** 導師中文名稱 */
 export const COACH_NAME_ZH = '許湘芸';
 
-/** 導師英文名稱（顯示用） */
-export const COACH_NAME_EN = 'Xu Xiangyun';
+/** 導師英文名稱（顯示用，湘芸 → Hsiang-Yun） */
+export const COACH_NAME_EN = 'Xu Hsiang-Yun';
 
 /**
- * 資料庫主目錄英文名稱（表名前綴）
- * 請從 docs/SUPABASE_NAMING.md 五選一，改為你選定的值。
+ * 資料庫主目錄英文名稱（表名前綴，湘芸選用 Hsiang-Yun → snake_case）
  */
-export const DB_SCHEMA_PREFIX = 'xiangyun';
+export const DB_SCHEMA_PREFIX = 'hsiangyun';
 
 /** 預計使用的資料表名稱（前綴 + 功能） */
 export const TABLE_NAMES = {

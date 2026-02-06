@@ -15,7 +15,7 @@ export const SUBSCRIBE_QUOTES_URL = '';
 export const LINE_OFFICIAL_URL = 'https://lin.ee/nCzoQCt';
 
 /** LINE / 品牌標籤（用於聯絡區塊） */
-export const LINE_BRAND_LABEL = '身心靈瘦身品牌教練【湘芸】';
+export const LINE_BRAND_LABEL = '身心靈瘦身品牌教練【Hsiang-Yun】';
 
 /** LINE / 品牌標語（心靈減脂｜產後減脂｜反覆復胖｜健康吃瘦） */
 export const LINE_TAGLINE = '心靈減脂｜產後減脂｜反覆復胖｜健康吃瘦';
