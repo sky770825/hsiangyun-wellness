@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import petalPattern from '@/assets/petal-pattern.jpg';
+import { SafeImage } from '@/components/SafeImage';
 import { METHOD_PILLARS } from '@/data';
 import { ROUTES } from '@/config/routes';
 import { getBreadcrumbsForPath } from '@/components/Breadcrumbs';
@@ -19,7 +20,7 @@ const Method = () => {
       {/* Hero */}
       <section className="pt-32 pb-20 bg-background relative overflow-hidden">
         <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[400px] h-[400px] opacity-10">
-          <img src={petalPattern} alt="" className="w-full h-full object-contain" />
+          <SafeImage src={petalPattern} alt="" className="w-full h-full object-contain" />
         </div>
 
         <div className="section-container relative z-10">

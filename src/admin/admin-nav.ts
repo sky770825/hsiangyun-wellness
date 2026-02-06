@@ -10,5 +10,6 @@ export const ADMIN_NAV = [
   { label: '預約管理', path: ADMIN_ROUTES.BOOKINGS, icon: 'CalendarCheck' },
   { label: 'CRM 學員', path: ADMIN_ROUTES.CRM, icon: 'Users' },
   { label: '學員任務板', path: ADMIN_ROUTES.TASKS, icon: 'Kanban' },
+  { label: '本週行事曆', path: ADMIN_ROUTES.CALENDAR, icon: 'CalendarDays' },
   { label: '推播發送', path: ADMIN_ROUTES.PUSH, icon: 'Send' },
 ] as const;

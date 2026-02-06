@@ -21,6 +21,9 @@ export const ADMIN_ROUTES = {
   MEDIA: '/admin/media',
   BOOKINGS: '/admin/bookings',
   CRM: '/admin/crm',
+  /** 學員詳情（:memberId 為 UUID） */
+  CRM_MEMBER: (id: string) => `/admin/crm/${id}`,
   TASKS: '/admin/tasks',
+  CALENDAR: '/admin/calendar',
   PUSH: '/admin/push',
 } as const;

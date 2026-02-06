@@ -25,6 +25,8 @@ export const DB_SCHEMA_PREFIX = 'hsiangyun';
 export const TABLE_NAMES = {
   /** 會員／學員名單 */
   MEMBERS: `${DB_SCHEMA_PREFIX}_members`,
+  /** 諮詢紀錄 */
+  SESSION_NOTES: `${DB_SCHEMA_PREFIX}_session_notes`,
   /** 預約資訊 */
   BOOKINGS: `${DB_SCHEMA_PREFIX}_bookings`,
   /** 學員任務／進度（任務板） */

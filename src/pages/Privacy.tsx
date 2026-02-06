@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { PageLayout } from '@/layouts';
 import { ROUTES, LINE_OFFICIAL_URL } from '@/config';
 import { getBreadcrumbsForPath } from '@/components/Breadcrumbs';
@@ -25,7 +25,7 @@ const Privacy = () => {
           <h2 className="font-display text-xl text-foreground mt-8">四、您的權利</h2>
           <p>您可要求查詢、更正或刪除您的個人資料，請透過預約表單或網站所載聯絡方式與我們聯繫。您亦可透過<a href={LINE_OFFICIAL_URL} target="_blank" rel="noopener noreferrer" className="text-primary underline hover:no-underline">官方 LINE</a>與我們聯繫。</p>
           <p className="mt-8">
-            <a href={ROUTES.HOME} className="text-primary underline hover:no-underline">返回首頁</a>
+            <Link to={ROUTES.HOME} className="text-primary underline hover:no-underline">返回首頁</Link>
           </p>
         </div>
       </div>

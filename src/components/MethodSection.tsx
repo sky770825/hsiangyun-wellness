@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import petalPattern from '@/assets/petal-pattern.jpg';
+import { SafeImage } from '@/components/SafeImage';
 import { METHOD_PILLARS } from '@/data';
 
 const MethodSection = () => {
@@ -10,7 +11,7 @@ const MethodSection = () => {
     <section className="py-24 bg-background relative overflow-hidden">
       {/* 背景裝飾 */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] opacity-10">
-        <img src={petalPattern} alt="" className="w-full h-full object-contain" />
+        <SafeImage src={petalPattern} alt="" className="w-full h-full object-contain" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">

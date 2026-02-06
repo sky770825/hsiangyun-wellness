@@ -6,6 +6,7 @@ import {
   CalendarCheck,
   Users,
   Kanban,
+  CalendarDays,
   Send,
   ExternalLink,
 } from 'lucide-react';
@@ -20,6 +21,7 @@ const iconMap = {
   CalendarCheck,
   Users,
   Kanban,
+  CalendarDays,
   Send,
 };
 

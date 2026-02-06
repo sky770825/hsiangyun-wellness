@@ -11,7 +11,9 @@ import {
   AdminMedia,
   AdminBookings,
   AdminCRM,
+  AdminMemberDetail,
   AdminTaskBoard,
+  AdminCalendar,
   AdminPush,
 } from "@/admin/pages";
 import {
@@ -51,7 +53,9 @@ const App = () => (
                   <Route path="media" element={<AdminMedia />} />
                   <Route path="bookings" element={<AdminBookings />} />
                   <Route path="crm" element={<AdminCRM />} />
+                  <Route path="crm/:memberId" element={<AdminMemberDetail />} />
                   <Route path="tasks" element={<AdminTaskBoard />} />
+                  <Route path="calendar" element={<AdminCalendar />} />
                   <Route path="push" element={<AdminPush />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />

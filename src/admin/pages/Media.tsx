@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { toast } from 'sonner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,8 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { loadMedia, saveMedia, generateId } from '../store';
+import { fetchMedia, createMedia, updateMediaUsage, deleteMedia } from '@/services/media';
+import { hasSupabase } from '@/lib/env';
 import type { MediaItem } from '../types';
 import { EmptyState } from '../components/EmptyState';
 import { SafeImage } from '@/components/SafeImage';
@@ -29,11 +31,35 @@ import { SafeImage } from '@/components/SafeImage';
 type Usage = 'hero' | 'profile' | 'petal' | 'other';
 
 export default function AdminMedia() {
-  const [items, setItems] = useState<MediaItem[]>(() => loadMedia());
+  const [items, setItems] = useState<MediaItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [deleteTarget, setDeleteTarget] = useState<MediaItem | null>(null);
+  const [addByUrl, setAddByUrl] = useState(false);
+  const [urlForm, setUrlForm] = useState({ name: '', url: '', usage: 'other' as Usage });
+
+  useEffect(() => {
+    let cancelled = false;
+    if (hasSupabase()) {
+      fetchMedia().then((list) => {
+        if (!cancelled) {
+          setItems(list);
+          setLoading(false);
+        }
+      });
+    } else {
+      setItems(loadMedia());
+      setLoading(false);
+    }
+    return () => { cancelled = true; };
+  }, []);
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (hasSupabase()) {
+      toast.info('已接 Supabase：請使用「新增圖片連結」填入圖片網址');
+      e.target.value = '';
+      return;
+    }
     const files = e.target.files;
     if (!files?.length) return;
     const newItems: MediaItem[] = [];
@@ -54,10 +80,23 @@ export default function AdminMedia() {
     e.target.value = '';
   };
 
-  const updateUsage = (id: string, usage: Usage) => {
-    const next = items.map((m) => (m.id === id ? { ...m, usage } : m));
-    setItems(next);
-    saveMedia(next);
+  const addByUrlSubmit = async () => {
+    if (!urlForm.url.trim()) return;
+    const name = urlForm.name.trim() || urlForm.url;
+    const created = await createMedia({
+      name,
+      url: urlForm.url.trim(),
+      usage: urlForm.usage,
+    });
+    setItems((prev) => [created, ...prev]);
+    setUrlForm({ name: '', url: '', usage: 'other' });
+    setAddByUrl(false);
+    toast.success('已新增');
+  };
+
+  const updateUsage = async (id: string, usage: Usage) => {
+    setItems((prev) => prev.map((m) => (m.id === id ? { ...m, usage } : m)));
+    await updateMediaUsage(id, usage);
   };
 
   const remove = (id: string) => {
@@ -66,12 +105,12 @@ export default function AdminMedia() {
     setDeleteTarget(found);
   };
 
-  const confirmRemove = () => {
+  const confirmRemove = async () => {
     if (!deleteTarget) return;
-    const next = items.filter((m) => m.id !== deleteTarget.id);
+    const id = deleteTarget.id;
     if (deleteTarget.url?.startsWith('blob:')) URL.revokeObjectURL(deleteTarget.url);
-    setItems(next);
-    saveMedia(next);
+    setItems((prev) => prev.filter((m) => m.id !== id));
+    await deleteMedia(id);
     setDeleteTarget(null);
     toast.success('已刪除');
   };
@@ -87,26 +126,73 @@ export default function AdminMedia() {
         <CardHeader>
           <CardTitle className="font-display text-xl">上傳圖片</CardTitle>
           <CardDescription className="font-body">
-            目前儲存於瀏覽器本地，之後接 Supabase Storage 可改為雲端儲存。
+            {hasSupabase() ? '已接 Supabase：可新增圖片連結（網址）。檔案上傳需接 Storage 後開放。' : '目前儲存於瀏覽器本地。'}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            multiple
-            className="hidden"
-            onChange={handleFile}
-          />
-          <Button onClick={() => fileInputRef.current?.click()} variant="golden">
-            選擇檔案上傳
-          </Button>
+        <CardContent className="space-y-3">
+          {hasSupabase() ? (
+            <>
+              {!addByUrl ? (
+                <Button onClick={() => setAddByUrl(true)} variant="golden" className="min-h-[44px]">
+                  新增圖片連結
+                </Button>
+              ) : (
+                <div className="space-y-2 rounded-lg border p-4">
+                  <Label>圖片網址</Label>
+                  <Input
+                    placeholder="https://..."
+                    value={urlForm.url}
+                    onChange={(e) => setUrlForm((f) => ({ ...f, url: e.target.value }))}
+                    className="min-h-[44px]"
+                  />
+                  <Label>名稱（選填）</Label>
+                  <Input
+                    placeholder="顯示名稱"
+                    value={urlForm.name}
+                    onChange={(e) => setUrlForm((f) => ({ ...f, name: e.target.value }))}
+                    className="min-h-[44px]"
+                  />
+                  <div className="flex gap-2">
+                    <Select value={urlForm.usage} onValueChange={(v) => setUrlForm((f) => ({ ...f, usage: v as Usage }))}>
+                      <SelectTrigger className="w-[140px] min-h-[44px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="hero">首頁 Hero</SelectItem>
+                        <SelectItem value="profile">形象照</SelectItem>
+                        <SelectItem value="petal">裝飾圖</SelectItem>
+                        <SelectItem value="other">其他</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button onClick={addByUrlSubmit} className="min-h-[44px]">新增</Button>
+                    <Button variant="outline" onClick={() => setAddByUrl(false)} className="min-h-[44px]">取消</Button>
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                className="hidden"
+                onChange={handleFile}
+              />
+              <Button onClick={() => fileInputRef.current?.click()} variant="golden" className="min-h-[44px]">
+                選擇檔案上傳
+              </Button>
+            </>
+          )}
         </CardContent>
       </Card>
 
       <div>
         <h2 className="font-display text-xl text-foreground mb-4">已上傳項目</h2>
+        {loading ? (
+          <p className="text-muted-foreground font-body text-sm">載入中…</p>
+        ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
             <Card key={item.id} className="card-pearl overflow-hidden">
@@ -152,14 +238,21 @@ export default function AdminMedia() {
             </Card>
           ))}
         </div>
-        {items.length === 0 && (
+        )}
+        {!loading && items.length === 0 && (
           <EmptyState
             title="尚無圖片"
-            description="點擊「選擇檔案上傳」加入第一張圖片。"
+            description={hasSupabase() ? '點擊「新增圖片連結」加入圖片網址。' : '點擊「選擇檔案上傳」加入第一張圖片。'}
             action={
-              <Button variant="golden" onClick={() => fileInputRef.current?.click()}>
-                選擇檔案上傳
-              </Button>
+              hasSupabase() ? (
+                <Button variant="golden" onClick={() => setAddByUrl(true)} className="min-h-[44px]">
+                  新增圖片連結
+                </Button>
+              ) : (
+                <Button variant="golden" onClick={() => fileInputRef.current?.click()} className="min-h-[44px]">
+                  選擇檔案上傳
+                </Button>
+              )
             }
           />
         )}
