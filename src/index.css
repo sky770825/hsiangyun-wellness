@@ -1,0 +1,370 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Noto+Serif+TC:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* 主色系 - 溫柔玫瑰粉系 */
+    --background: 350 100% 97%; /* #FADADD 玫瑰粉 */
+    --foreground: 10 14% 26%; /* #4B3C39 深褐灰 */
+
+    --card: 0 100% 99%; /* #FFFAFA 珍珠白 */
+    --card-foreground: 10 14% 26%;
+
+    --popover: 0 100% 99%;
+    --popover-foreground: 10 14% 26%;
+
+    /* 品牌主色 - 香檳金 */
+    --primary: 35 52% 78%; /* #E9CBA7 霧面香檳金 */
+    --primary-foreground: 10 14% 26%;
+
+    /* 次要色 - 更深的玫瑰 */
+    --secondary: 350 60% 92%;
+    --secondary-foreground: 10 14% 26%;
+
+    /* 柔和底色 */
+    --muted: 350 40% 95%;
+    --muted-foreground: 10 10% 45%;
+
+    /* 強調色 - 暖金 */
+    --accent: 35 60% 72%;
+    --accent-foreground: 10 14% 26%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 35 30% 85%;
+    --input: 35 30% 88%;
+    --ring: 35 52% 78%;
+
+    --radius: 1rem;
+
+    /* 品牌專屬變數 */
+    --rose-soft: 350 100% 97%;
+    --pearl: 0 100% 99%;
+    --champagne: 35 52% 78%;
+    --champagne-light: 35 60% 88%;
+    --champagne-dark: 35 45% 65%;
+    --warm-brown: 10 14% 26%;
+    --warm-brown-light: 10 10% 45%;
+
+    /* 漸層 */
+    --gradient-hero: linear-gradient(135deg, hsl(350 100% 97%) 0%, hsl(35 60% 92%) 50%, hsl(350 80% 95%) 100%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(35 52% 78% / 0.3) 0%, transparent 70%);
+    --gradient-card: linear-gradient(180deg, hsl(0 100% 99%) 0%, hsl(350 60% 98%) 100%);
+
+    /* 陰影 */
+    --shadow-soft: 0 4px 20px -4px hsl(35 52% 78% / 0.2);
+    --shadow-glow: 0 0 40px hsl(35 52% 78% / 0.15);
+    --shadow-card: 0 8px 32px -8px hsl(10 14% 26% / 0.08);
+
+    --sidebar-background: 350 100% 97%;
+    --sidebar-foreground: 10 14% 26%;
+    --sidebar-primary: 35 52% 78%;
+    --sidebar-primary-foreground: 10 14% 26%;
+    --sidebar-accent: 350 60% 92%;
+    --sidebar-accent-foreground: 10 14% 26%;
+    --sidebar-border: 35 30% 85%;
+    --sidebar-ring: 35 52% 78%;
+
+    /* 後台可覆寫：字形與字級（由 ThemeProvider 寫入） */
+    --font-display-custom: 'Cormorant Garamond', 'Noto Serif TC', serif;
+    --font-body-custom: 'Noto Serif TC', Georgia, serif;
+    --font-size-base: 1rem;
+    --font-size-heading: 1.25rem;
+  }
+
+  .dark {
+    --background: 10 14% 12%;
+    --foreground: 350 20% 92%;
+    --card: 10 14% 16%;
+    --card-foreground: 350 20% 92%;
+    --popover: 10 14% 16%;
+    --popover-foreground: 350 20% 92%;
+    --primary: 35 52% 68%;
+    --primary-foreground: 10 14% 12%;
+    --secondary: 10 14% 20%;
+    --secondary-foreground: 350 20% 92%;
+    --muted: 10 14% 20%;
+    --muted-foreground: 350 10% 65%;
+    --accent: 35 45% 55%;
+    --accent-foreground: 350 20% 92%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 350 20% 92%;
+    --border: 10 14% 25%;
+    --input: 10 14% 25%;
+    --ring: 35 52% 68%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body-custom);
+    font-size: var(--font-size-base);
+    line-height: 2;
+    letter-spacing: 0.02em;
+  }
+
+  /* a11y：鍵盤焦點可見，不依賴滑鼠 hover */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  [tabindex="0"]:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* 標題階層：未加 utility 時之預設字級，高端排版需層次分明 */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display-custom);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.25; }
+  h2 { font-size: clamp(1.5rem, 4vw, 2.25rem); line-height: 1.3; }
+  h3 { font-size: clamp(1.25rem, 3vw, 1.875rem); line-height: 1.35; }
+  h4, h5, h6 { font-size: var(--font-size-heading); line-height: 1.4; }
+}
+
+@layer components {
+  /* 呼吸動畫 */
+  .animate-breathe {
+    animation: breathe 6s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 4s ease-in-out infinite;
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+  }
+
+  .animate-fade-in-slow {
+    animation: fadeIn 1.2s ease-out forwards;
+  }
+
+  /* 文字淡入動畫 */
+  .animate-text-reveal {
+    animation: textReveal 1s ease-out forwards;
+  }
+
+  /* 卡片懸浮效果 */
+  .card-hover {
+    @apply transition-all duration-500 ease-out;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* 金色底線連結 */
+  .link-underline {
+    @apply relative inline-block;
+  }
+  .link-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300;
+  }
+  .link-underline:hover::after {
+    @apply w-full;
+  }
+
+  /* 柔光背景 */
+  .bg-soft-glow {
+    background: var(--gradient-hero);
+    position: relative;
+  }
+  .bg-soft-glow::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-glow);
+    pointer-events: none;
+  }
+
+  /* 珍珠卡片 */
+  .card-pearl {
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid hsl(var(--champagne-light));
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .font-display {
+    font-family: var(--font-display-custom);
+  }
+
+  .font-body {
+    font-family: var(--font-body-custom);
+  }
+
+  /* 區塊內容內距：與導覽、頁尾一致，方便響應式與視覺平衡 */
+  .section-container {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
+@keyframes breathe {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    opacity: 0.5;
+    filter: blur(40px);
+  }
+  50% {
+    opacity: 0.8;
+    filter: blur(60px);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes textReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* 新增懸浮效果 */
+@keyframes gentleFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.5deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px hsl(var(--primary) / 0.4);
+  }
+}
+
+/* 懸浮效果 class */
+.hover-lift {
+  @apply transition-all duration-300 ease-out;
+}
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -15px hsl(var(--warm-brown) / 0.15);
+}
+
+.hover-glow {
+  @apply transition-all duration-300;
+}
+.hover-glow:hover {
+  box-shadow: 0 0 30px hsl(var(--primary) / 0.3);
+}
+
+.hover-scale-subtle {
+  @apply transition-transform duration-300 ease-out;
+}
+.hover-scale-subtle:hover {
+  transform: scale(1.02);
+}
+
+/* 圖片懸浮效果 */
+.image-float {
+  animation: gentleFloat 6s ease-in-out infinite;
+}
+
+/* 閃爍邊框 */
+.shimmer-border {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    hsl(var(--champagne) / 0.3),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* 脈衝發光 */
+.pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
