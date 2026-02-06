@@ -11,12 +11,22 @@ import {
 } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { loadBookings, saveBookings } from '../store';
-import { fetchBookings, updateBookingStatus } from '@/services/booking';
+import { fetchBookings, updateBookingStatus, deleteBooking } from '@/services/booking';
 import { createMember, fetchMembers } from '@/services/crm';
 import type { BookingSubmission } from '../types';
 import { EmptyState } from '../components/EmptyState';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
-import { LayoutGrid, List } from 'lucide-react';
+import { LayoutGrid, List, Trash2 } from 'lucide-react';
 
 const STATUS_MAP: Record<BookingSubmission['status'], string> = {
   pending: '待處理',
@@ -46,6 +56,7 @@ export default function AdminBookings() {
   const [viewMode, setViewMode] = useState<ViewMode>('cards');
   const [sortBy, setSortBy] = useState<SortBy>('dateDesc');
   const [groupByDate, setGroupByDate] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -85,6 +96,18 @@ export default function AdminBookings() {
     });
     setMembers((prev) => [...prev, { email: b.email }]);
     toast.success(`已將 ${b.name} 加入學員`);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteTargetId) return;
+    try {
+      await deleteBooking(deleteTargetId);
+      setBookings((prev) => prev.filter((b) => b.id !== deleteTargetId));
+      toast.success('已刪除該筆預約');
+    } catch {
+      toast.error('刪除失敗，請稍後再試');
+    }
+    setDeleteTargetId(null);
   };
 
   const filteredBookings = bookings.filter((b) => {
@@ -273,6 +296,9 @@ export default function AdminBookings() {
                                 ))}
                               </SelectContent>
                             </Select>
+                            <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={() => setDeleteTargetId(b.id)} aria-label="刪除此筆預約">
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -358,6 +384,9 @@ export default function AdminBookings() {
                       </SelectContent>
                     </Select>
                     <Badge variant="outline" className={STATUS_BADGE_CLASS[b.status]}>{STATUS_MAP[b.status]}</Badge>
+                    <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive min-h-[44px]" onClick={() => setDeleteTargetId(b.id)} aria-label="刪除此筆預約">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                     </div>
                   </div>
                   {expandedId === b.id && b.message && (
@@ -421,7 +450,7 @@ export default function AdminBookings() {
                         </Button>
                       )}
                     </div>
-                    <Select value={b.status} onValueChange={(v) => updateStatus(b.id, v as BookingSubmission['status'])}>
+<Select value={b.status} onValueChange={(v) => updateStatus(b.id, v as BookingSubmission['status'])}>
                       <SelectTrigger className="w-28 min-h-[44px]">
                         <SelectValue />
                       </SelectTrigger>
@@ -434,6 +463,9 @@ export default function AdminBookings() {
                       </SelectContent>
                     </Select>
                     <Badge variant="outline" className={STATUS_BADGE_CLASS[b.status]}>{STATUS_MAP[b.status]}</Badge>
+                    <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive min-h-[44px]" onClick={() => setDeleteTargetId(b.id)} aria-label="刪除此筆預約">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                     </div>
                   </div>
                   {expandedId === b.id && b.message && (
@@ -445,8 +477,25 @@ export default function AdminBookings() {
                 </div>
               ))
             )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+
+        <AlertDialog open={!!deleteTargetId} onOpenChange={(open) => !open && setDeleteTargetId(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>確認刪除此筆預約？</AlertDialogTitle>
+              <AlertDialogDescription>
+                刪除後無法復原，僅用於移除測試單或錯誤資料。
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>取消</AlertDialogCancel>
+              <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                刪除
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
     </div>
   );
 }

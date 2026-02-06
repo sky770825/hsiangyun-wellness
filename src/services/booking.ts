@@ -110,3 +110,24 @@ export async function updateBookingStatus(
   );
   store.saveBookings(list);
 }
+
+export async function deleteBooking(id: string): Promise<void> {
+  if (hasSupabase()) {
+    const supabase = getSupabaseClient();
+    if (supabase) {
+      const table = getTableName('BOOKINGS');
+      const { error } = await supabase.from(table).delete().eq('id', id);
+      if (error) {
+        if (error.code === 'PGRST301' || error.message.includes('row-level')) {
+          const list = store.loadBookings().filter((b) => b.id !== id);
+          store.saveBookings(list);
+          return;
+        }
+        throw new Error(error.message);
+      }
+      return;
+    }
+  }
+  const list = store.loadBookings().filter((b) => b.id !== id);
+  store.saveBookings(list);
+}

@@ -232,6 +232,12 @@ export default function AdminTaskBoard() {
                         }}
                       >
                         <CardHeader className="py-3">
+                          <p className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1.5">
+                            <span className="rounded bg-muted px-1.5 py-0.5">學員</span>
+                            <Link to={ADMIN_ROUTES.CRM_MEMBER(t.studentId)} className="text-primary hover:underline font-body" onClick={(e) => e.stopPropagation()}>
+                              {getStudentName(t.studentId)}
+                            </Link>
+                          </p>
                           <div className="flex flex-wrap items-center gap-2">
                             <CardTitle className="font-body text-sm">{t.title}</CardTitle>
                             {overdue && (
@@ -243,9 +249,6 @@ export default function AdminTaskBoard() {
                               {t.description}
                             </CardContent>
                           )}
-                          <p className="text-xs text-muted-foreground pt-1">
-                            學員：<Link to={ADMIN_ROUTES.CRM_MEMBER(t.studentId)} className="hover:text-primary hover:underline" onClick={(e) => e.stopPropagation()}>{getStudentName(t.studentId)}</Link>
-                          </p>
                         </CardHeader>
                       </Card>
                     );
