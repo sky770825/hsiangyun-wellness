@@ -80,10 +80,16 @@ const HeroSection = () => {
             </div>
 
             {/* CTA 按鈕 */}
-            <div>
+            <div className="flex flex-wrap gap-4">
               <Link to={ROUTES.ABOUT}>
                 <Button variant="hero" size="xl" className="group hover-lift">
                   開始認識我
+                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+              <Link to={ROUTES.BOOKING}>
+                <Button variant="golden" size="xl" className="group hover-lift">
+                  立即預約陪跑
                   <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>

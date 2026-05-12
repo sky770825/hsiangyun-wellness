@@ -16,9 +16,11 @@ export function QuizFlow() {
   const [step, setStep] = useState<Step>('questions');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [history, setHistory] = useState<number[]>([]);
 
   const question = QUIZ_QUESTIONS[currentIndex];
   const isLastQuestion = currentIndex === QUIZ_QUESTIONS.length - 1;
+  const progress = ((currentIndex) / QUIZ_QUESTIONS.length) * 100;
 
   const handleOption = (value: string) => {
     const next = { ...answers, [question.id]: value };
@@ -26,8 +28,22 @@ export function QuizFlow() {
     if (isLastQuestion) {
       setStep('result');
     } else {
+      setHistory((h) => [...h, currentIndex]);
       setCurrentIndex((i) => i + 1);
     }
+  };
+
+  const handleBack = () => {
+    if (history.length === 0) return;
+    const prev = history[history.length - 1];
+    setHistory((h) => h.slice(0, -1));
+    const prevQuestion = QUIZ_QUESTIONS[prev];
+    setAnswers((a) => {
+      const next = { ...a };
+      delete next[prevQuestion.id];
+      return next;
+    });
+    setCurrentIndex(prev);
   };
 
   if (step === 'result') {
@@ -55,6 +71,14 @@ export function QuizFlow() {
           <Button variant="soft" size="lg" asChild>
             <Link to={ROUTES.RESOURCES}>看更多資源</Link>
           </Button>
+          <Button variant="soft" size="lg" onClick={() => {
+            setStep('questions');
+            setCurrentIndex(0);
+            setAnswers({});
+            setHistory([]);
+          }}>
+            重新測驗
+          </Button>
         </div>
       </div>
     );
@@ -62,9 +86,20 @@ export function QuizFlow() {
 
   return (
     <div className="card-pearl rounded-3xl p-8 md:p-12 space-y-8">
-      <div className="flex items-center justify-between text-sm text-muted-foreground font-body">
-        <span>第 {currentIndex + 1} / {QUIZ_QUESTIONS.length} 題</span>
+      {/* 進度條 */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between text-sm text-muted-foreground font-body">
+          <span>第 {currentIndex + 1} / {QUIZ_QUESTIONS.length} 題</span>
+          <span>{Math.round(progress)}%</span>
+        </div>
+        <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
+          <div
+            className="h-full bg-primary rounded-full transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
       </div>
+
       <h2 className="font-display text-xl md:text-2xl text-foreground" id={`quiz-q-${question.id}`}>
         {question.question}
       </h2>
@@ -85,6 +120,21 @@ export function QuizFlow() {
           </Button>
         ))}
       </div>
+
+      {/* 上一題按鈕 */}
+      {currentIndex > 0 && (
+        <div className="pt-2">
+          <Button
+            type="button"
+            variant="soft"
+            size="sm"
+            onClick={handleBack}
+            className="font-body text-muted-foreground"
+          >
+            ← 上一題
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

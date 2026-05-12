@@ -14,6 +14,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const Booking = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
   const [agreePrivacy, setAgreePrivacy] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -41,9 +42,15 @@ const Booking = () => {
     }
     setLoading(true);
     try {
-      await createBooking({ name: name.trim(), email: email.trim(), message: message.trim() || undefined });
+      await createBooking({
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone.trim() || undefined,
+        message: message.trim() || undefined,
+      });
       setName('');
       setEmail('');
+      setPhone('');
       setMessage('');
       setAgreePrivacy(false);
       setSubmitted(true);
@@ -149,6 +156,17 @@ const Booking = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="我會用這個信箱聯繫你"
+                      className="w-full px-4 py-3 rounded-xl bg-card border border-border focus:border-primary focus:outline-none transition-colors font-body"
+                      disabled={loading}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-foreground font-body text-sm">聯絡電話（選填）</label>
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="方便聯絡的手機號碼（選填）"
                       className="w-full px-4 py-3 rounded-xl bg-card border border-border focus:border-primary focus:outline-none transition-colors font-body"
                       disabled={loading}
                     />

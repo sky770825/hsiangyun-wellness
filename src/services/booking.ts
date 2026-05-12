@@ -14,6 +14,7 @@ function rowToBooking(row: Record<string, unknown>): BookingSubmission {
     id: String(row.id),
     name: String(row.name),
     email: String(row.email),
+    phone: row.phone != null ? String(row.phone) : undefined,
     message: row.message != null ? String(row.message) : undefined,
     status: row.status as BookingSubmission['status'],
     createdAt: String(row.created_at),
@@ -63,6 +64,7 @@ export async function createBooking(
         .insert({
           name: data.name,
           email: data.email,
+          phone: data.phone ?? null,
           message: data.message ?? null,
           status: 'pending',
         })

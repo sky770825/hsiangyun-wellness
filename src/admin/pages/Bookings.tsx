@@ -91,6 +91,7 @@ export default function AdminBookings() {
     await createMember({
       name: b.name,
       email: b.email,
+      phone: b.phone,
       source: 'booking',
       status: 'new',
     });
@@ -250,6 +251,7 @@ export default function AdminBookings() {
                   <TableRow>
                     <TableHead>姓名</TableHead>
                     <TableHead>Email</TableHead>
+                    <TableHead>電話</TableHead>
                     <TableHead className="max-w-[200px]">留言</TableHead>
                     <TableHead>狀態</TableHead>
                     <TableHead>建立日</TableHead>
@@ -262,6 +264,7 @@ export default function AdminBookings() {
                       <TableRow>
                         <TableCell className="font-medium">{b.name}</TableCell>
                         <TableCell className="text-muted-foreground text-sm">{b.email}</TableCell>
+                        <TableCell className="text-muted-foreground text-sm">{b.phone ?? '—'}</TableCell>
                         <TableCell className="max-w-[200px] truncate text-sm text-muted-foreground" title={b.message ?? ''}>
                           {b.message ? (b.message.length > 40 ? b.message.slice(0, 40) + '…' : b.message) : '—'}
                         </TableCell>
@@ -304,7 +307,7 @@ export default function AdminBookings() {
                       </TableRow>
                       {expandedId === b.id && b.message && (
                         <TableRow>
-                          <TableCell colSpan={6} className="bg-muted/40 border-l-2 border-primary/30">
+                          <TableCell colSpan={7} className="bg-muted/40 border-l-2 border-primary/30">
                             <p className="text-xs text-muted-foreground mb-1">完整留言</p>
                             <p className="font-body text-sm whitespace-pre-wrap">{b.message}</p>
                             <p className="text-xs text-muted-foreground mt-2">建立 {b.createdAt}{b.updatedAt !== b.createdAt ? ` · 更新 ${b.updatedAt}` : ''}</p>
@@ -330,6 +333,7 @@ export default function AdminBookings() {
                     <div className="min-w-0 flex-1">
                       <p className="font-display text-foreground">{b.name}</p>
                       <p className="text-muted-foreground font-body text-sm">{b.email}</p>
+                      {b.phone && <p className="text-muted-foreground font-body text-sm">{b.phone}</p>}
                       {b.message && (
                         <p className={`text-muted-foreground font-body text-sm mt-2 ${expandedId === b.id ? '' : 'line-clamp-2'}`}>
                           {b.message}
@@ -409,6 +413,7 @@ export default function AdminBookings() {
                     <div className="min-w-0 flex-1">
                       <p className="font-display text-foreground">{b.name}</p>
                       <p className="text-muted-foreground font-body text-sm">{b.email}</p>
+                      {b.phone && <p className="text-muted-foreground font-body text-sm">{b.phone}</p>}
                       {b.message && (
                         <p className={`text-muted-foreground font-body text-sm mt-2 ${expandedId === b.id ? '' : 'line-clamp-2'}`}>
                           {b.message}

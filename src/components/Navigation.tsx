@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import ProfilePhoto from '@/components/ProfilePhoto';
 import { NAV_ITEMS, SITE_NAME, ROUTES } from '@/config';
+import { Button } from '@/components/ui/button';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -58,6 +59,11 @@ const Navigation = () => {
                 {item.label}
               </Link>
             ))}
+            <Link to={ROUTES.BOOKING}>
+              <Button variant="golden" size="sm">
+                立即預約
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -92,6 +98,11 @@ const Navigation = () => {
               {item.label}
             </Link>
           ))}
+          <Link to={ROUTES.BOOKING} className="block pt-2 pb-2">
+            <Button variant="golden" size="sm" className="w-full">
+              立即預約
+            </Button>
+          </Link>
         </div>
       </div>
     </nav>
