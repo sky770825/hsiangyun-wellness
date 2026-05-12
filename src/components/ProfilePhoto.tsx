@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
-/** 示範用形象照（可於後台媒體庫替換為真實上傳） */
-const DEMO_PROFILE_IMAGE = '/demo-profile.jpg';
+/** 教練形象照 */
+const DEMO_PROFILE_IMAGE = '/images/portrait.jpg';
 
 interface ProfilePhotoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'hero';
