@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import heroBg from '@/assets/hero-bg.jpg';
+import heroBg from '/hero-bg.jpg';
 import ProfilePhoto from '@/components/ProfilePhoto';
 import { HERO_QUOTES } from '@/data';
 import { ROUTES } from '@/config/routes';

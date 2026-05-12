@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import petalPattern from '@/assets/petal-pattern.jpg';
+import petalPattern from '/images/decor-bg.jpg';
 import { SafeImage } from '@/components/SafeImage';
 import { METHOD_PILLARS } from '@/data';
 

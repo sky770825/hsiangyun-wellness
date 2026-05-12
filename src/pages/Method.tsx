@@ -3,7 +3,7 @@ import { PageLayout } from '@/layouts';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import petalPattern from '@/assets/petal-pattern.jpg';
+import petalPattern from '/images/decor-bg.jpg';
 import { SafeImage } from '@/components/SafeImage';
 import { METHOD_PILLARS } from '@/data';
 import { ROUTES } from '@/config/routes';

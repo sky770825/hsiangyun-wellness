@@ -22,7 +22,7 @@ export interface StoryGalleryPhoto {
 }
 
 /** 示範圖路徑（可替換為後台媒體庫或真實勵志照） */
-const DEMO_GALLERY = ['/demo-gallery-1.jpg', '/demo-gallery-2.jpg', '/demo-gallery-3.jpg'] as const;
+const DEMO_GALLERY = ['/images/story-01.jpg', '/images/story-02.jpg', '/images/story-03.jpg'] as const;
 
 export const STORY_GALLERY_PHOTOS: StoryGalleryPhoto[] = [
   { id: 'gallery-1', imageUrl: DEMO_GALLERY[0], caption: '願意分享的經歷' },
@@ -36,7 +36,7 @@ export const STORIES: StoryItem[] = [
     before: '我每次爆食完都很後悔，覺得自己很沒用，為什麼就是控制不了',
     after: '我發現我是在吞下那些不能說的情緒——那些在工作中不能表達的委屈，在家裡不能展現的脆弱。現在我學會了先問自己：「你怎麼了？你需要什麼？」',
     journey: '3個月的陪跑旅程',
-    imageUrl: '/demo-story.jpg',
+    imageUrl: '/images/result-01.jpg',
     imageCaption: '三個月後，我開始敢看鏡頭了',
   },
   {
@@ -44,7 +44,7 @@ export const STORIES: StoryItem[] = [
     before: '我已經試過所有方法，節食、運動、各種減肥產品，就是瘦不下來',
     after: '原來我的身體一直覺得「瘦」代表危險。小時候媽媽生病那段時間，瘦對我來說等於不安全。當我開始感覺現在是安全的，體重才開始鬆動。',
     journey: '6個月的深度陪伴',
-    imageUrl: '/demo-petal.jpg',
+    imageUrl: '/images/result-02.jpg',
     imageCaption: '六個月的深度陪伴，身體開始鬆動',
   },
   {
@@ -52,7 +52,7 @@ export const STORIES: StoryItem[] = [
     before: '我恨我的身體，它從來不聽我的話，我覺得它背叛了我',
     after: '現在我知道，身體不是敵人，它一直在用自己的方式保護我。那些脂肪，是它給我的盔甲。我們和解了，我開始說：謝謝你一直保護我。',
     journey: '4個月的轉化之路',
-    imageUrl: '/demo-story.jpg',
+    imageUrl: '/images/result-03.jpg',
     imageCaption: '與身體和解的那一天',
   },
   {

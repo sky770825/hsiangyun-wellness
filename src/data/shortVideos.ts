@@ -34,7 +34,7 @@ export function isEmbedVideo(item: ShortVideoItem): boolean {
 }
 
 /** 示範縮圖（可替換為真實 TikTok 或 YouTube Shorts 後改為真實縮圖） */
-const DEMO_VIDEO_THUMB = '/demo-video.jpg';
+const DEMO_VIDEO_THUMB = '/images/vajra-bg.jpg';
 
 export const SHORT_VIDEOS: ShortVideoItem[] = [
   {
@@ -47,12 +47,12 @@ export const SHORT_VIDEOS: ShortVideoItem[] = [
     id: 'demo-2',
     title: '日常中的小練習',
     linkUrl: 'https://www.tiktok.com',
-    thumbnail: '/demo-gallery-1.jpg',
+    thumbnail: '/images/result-01.jpg',
   },
   {
     id: 'demo-3',
     title: '加入你的短影音',
     linkUrl: 'https://www.tiktok.com',
-    thumbnail: '/demo-gallery-2.jpg',
+    thumbnail: '/images/result-02.jpg',
   },
 ];
