@@ -368,3 +368,33 @@
 .pulse-glow {
   animation: pulseGlow 3s ease-in-out infinite;
 }
+
+/* 無障礙：尊重「減少動態偏好」 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-breathe,
+  .animate-float,
+  .animate-glow,
+  .animate-fade-up,
+  .animate-fade-in-slow,
+  .animate-text-reveal,
+  .image-float,
+  .shimmer-border,
+  .pulse-glow {
+    animation: none !important;
+  }
+
+  .card-hover:hover,
+  .hover-lift:hover,
+  .hover-scale-subtle:hover {
+    transform: none !important;
+  }
+}
