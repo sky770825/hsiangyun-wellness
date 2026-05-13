@@ -52,7 +52,7 @@ export const SHORT_VIDEOS: ShortVideoItem[] = [
   {
     id: 'demo-3',
     title: '加入你的短影音',
-    linkUrl: 'https://www.tiktok.com',
-    thumbnail: '/images/result-02.jpg',
+    videoId: '7535842254968212742',
+    linkUrl: 'https://www.tiktok.com/@chen.cc126/video/7535842254968212742',
   },
 ];
