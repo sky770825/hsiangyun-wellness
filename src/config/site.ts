@@ -2,7 +2,7 @@
  * 網站基本設定（標題、描述、可配置連結等）
  */
 
-export const SITE_NAME = '身心靈瘦身品牌教練 Hsiang-Yun';
+export const SITE_NAME = '身心靈瘦身教練 Hsiang-Yun';
 export const DEFAULT_DESCRIPTION = '陪你回到身體的安全感，找回與自己和解的力量。';
 
 /** 免費下載 PDF 連結（可放 public/ 或 CDN，空字串則顯示「準備中」toast） */
