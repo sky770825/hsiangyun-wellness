@@ -2,7 +2,6 @@
  * 後台登入情境：目前為 mock（localStorage 記住模擬登入），接 Supabase Auth 後改為 session
  */
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { hasSupabase } from '@/lib/env';
 
 const AUTH_STORAGE_KEY = 'admin_auth_mock';
 
@@ -23,12 +22,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AuthState>({ isAuthenticated: false });
 
   const checkAuth = useCallback(() => {
-    if (hasSupabase()) {
-      // TODO: getSession() from Supabase and set isAuthenticated
-      setState({ isAuthenticated: !!localStorage.getItem(AUTH_STORAGE_KEY) });
-      return;
-    }
-    setState({ isAuthenticated: !!localStorage.getItem(AUTH_STORAGE_KEY) });
+    // 無論是否有 Supabase，永遠檢查 localStorage mock auth 狀態
+    const stored = localStorage.getItem(AUTH_STORAGE_KEY);
+    setState({ isAuthenticated: !!stored });
   }, []);
 
   useEffect(() => {
@@ -36,13 +32,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [checkAuth]);
 
   const login = useCallback((password: string): boolean => {
-    if (hasSupabase()) {
-      // TODO: signInWithPassword()
-      // setState({ isAuthenticated: true, userId: user.id });
-      // return true;
-    }
     const expected = getAdminPassword();
-    if (expected && password === expected) {
+    // 密碼為空字串時不允許登入
+    if (!expected) {
+      console.error('[Auth] VITE_ADMIN_PASSWORD 未設定，請聯繫系統管理員');
+      return false;
+    }
+    if (password === expected) {
       localStorage.setItem(AUTH_STORAGE_KEY, '1');
       setState({ isAuthenticated: true });
       return true;
@@ -51,9 +47,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
-    if (hasSupabase()) {
-      // TODO: signOut()
-    }
     localStorage.removeItem(AUTH_STORAGE_KEY);
     setState({ isAuthenticated: false });
   }, []);
