@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AdminThemeProvider } from "@/admin/ThemeProvider";
 import AdminLayout from "@/admin/AdminLayout";
+import { AdminLoginPage } from "@/auth/AdminLoginPage";
+import { ProtectedRoute } from "@/auth/ProtectedRoute";
 import {
   AdminDashboard,
   AdminSiteSettings,
@@ -46,8 +48,12 @@ const App = () => (
                 <Route path="/booking" element={<Booking />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/quiz" element={<Quiz />} />
-                <Route path="/admin/login" element={<Navigate to="/admin" replace />} />
-                <Route path="/admin" element={<AdminLayout />}>
+                <Route path="/admin/login" element={<AdminLoginPage />} />
+                <Route path="/admin" element={
+                  <ProtectedRoute>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }>
                   <Route index element={<AdminDashboard />} />
                   <Route path="settings" element={<AdminSiteSettings />} />
                   <Route path="media" element={<AdminMedia />} />
