@@ -1,4 +1,4 @@
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, Navigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Palette,
@@ -11,8 +11,9 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/auth/AuthContext';
 import { ADMIN_NAV } from './admin-nav';
-import { SITE_NAME, ROUTES } from '@/config';
+import { SITE_NAME } from '@/config';
 
 const iconMap = {
   LayoutDashboard,
@@ -27,10 +28,15 @@ const iconMap = {
 
 export default function AdminLayout() {
   const location = useLocation();
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/admin/login" state={{ from: location }} replace />;
+  }
 
   return (
     <div className="min-h-screen bg-background flex">
-      {/* 側邊欄 - 與前台相同設計語言 */}
+      {/* 側邊欄 */}
       <aside className="w-56 border-r border-border bg-card flex flex-col shrink-0">
         <div className="p-6 border-b border-border">
           <h1 className="font-display text-xl text-foreground">後台管理</h1>
@@ -59,7 +65,7 @@ export default function AdminLayout() {
         </nav>
         <div className="p-3 border-t border-border">
           <a
-            href={ROUTES.HOME}
+            href="/"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 rounded-lg px-3 py-2 text-muted-foreground hover:bg-secondary hover:text-foreground font-body text-sm"

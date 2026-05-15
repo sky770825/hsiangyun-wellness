@@ -49,11 +49,7 @@ const App = () => (
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/quiz" element={<Quiz />} />
                 <Route path="/admin/login" element={<AdminLoginPage />} />
-                <Route path="/admin" element={
-                  <ProtectedRoute>
-                    <AdminLayout />
-                  </ProtectedRoute>
-                }>
+                <Route path="/admin" element={<AdminLayout />}>
                   <Route index element={<AdminDashboard />} />
                   <Route path="settings" element={<AdminSiteSettings />} />
                   <Route path="media" element={<AdminMedia />} />
